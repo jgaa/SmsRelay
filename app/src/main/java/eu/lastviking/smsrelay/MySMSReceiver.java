@@ -11,6 +11,7 @@ import android.util.Log;
 class MySMSReceiver extends BroadcastReceiver {
 
     XmppSender xmpp = null;
+    Object lock = new Object();
 
     private class XmppTask extends AsyncTask<String, String, String> {
 
@@ -19,7 +20,7 @@ class MySMSReceiver extends BroadcastReceiver {
         @Override
         protected String doInBackground(String[] params) {
             try {
-                synchronized (this) {
+                synchronized (lock) {
                     if (xmpp == null) {
                         for(int i = 0; (i < retries) && (xmpp == null); ++i) {
                             try {
